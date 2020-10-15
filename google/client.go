@@ -18,14 +18,17 @@ type Client struct {
 // CustomSearch ...
 func (client *Client) CustomSearch(query url.Values) (*CustomSearchResponse, error) {
 
-	query.Add("cx", client.CustomSearchEngineID)
-	query.Add("key", client.APIKey)
-
 	baseURL := "https://www.googleapis.com/customsearch/v1"
-
 	req, err := http.NewRequest("GET", baseURL, nil)
 	if client.Referer != "" {
-		req.Header.Set("Referer", "http://localhost:8080")
+		req.Header.Set("Referer", client.Referer)
+	}
+
+	if client.CustomSearchEngineID != "" {
+		query.Add("cx", client.CustomSearchEngineID)
+	}
+	if client.APIKey != "" {
+		query.Add("key", client.APIKey)
 	}
 	req.URL.RawQuery = query.Encode()
 
