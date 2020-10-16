@@ -18,6 +18,10 @@ type Client struct {
 // CustomSearch ...
 func (client *Client) CustomSearch(query url.Values) (*CustomSearchResponse, error) {
 
+	if client.HTTPClient == nil {
+		client.HTTPClient = http.DefaultClient
+	}
+
 	baseURL := "https://www.googleapis.com/customsearch/v1"
 	req, err := http.NewRequest("GET", baseURL, nil)
 	if client.Referer != "" {
