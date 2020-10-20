@@ -48,11 +48,11 @@ func (client *Client) CustomSearch(query url.Values) (*CustomSearchResponse, err
 	}
 
 	if resp.Error.Code != 0 {
-		return nil, fmt.Errorf("Google API error: `%s`", resp.Error.Message)
+		return nil, fmt.Errorf("Google API error: %d %s", resp.Error.Code, resp.Error.Message)
 	}
 
 	if len(resp.Items) == 0 {
-		return nil, fmt.Errorf("no entries found for query: `%s`", query.Get("q"))
+		return nil, fmt.Errorf("no entries found for query: %s", query.Get("q"))
 	}
 
 	return resp, nil
