@@ -39,7 +39,7 @@ type Forecast struct {
 	} `json:"rain"`
 	Snow struct {
 		For3h float32 `json:"3h"` // Snow volume for last 3 hours (mm)
-	}
+	} `json:"snow"`
 }
 
 // Weather ...
