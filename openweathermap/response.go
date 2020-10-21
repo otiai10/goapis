@@ -51,6 +51,7 @@ type Weather struct {
 }
 
 // IconURL ...
-func (w Weather) IconURL() string {
-	return fmt.Sprintf("https://openweathermap.org/img/wn/%s.png", w.Icon)
+func (w Weather) IconURL(suffix ...string) string {
+	suffix = append(suffix, "")
+	return fmt.Sprintf("https://openweathermap.org/img/wn/%s%s.png", w.Icon, suffix[0])
 }
