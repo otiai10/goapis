@@ -15,7 +15,7 @@ type ForecastResponse struct {
 // Forecast read only
 // See https://openweathermap.org/forecast5#JSON
 type Forecast struct {
-	Timestamp int32  `json:"dt"`
+	Timestamp int64  `json:"dt"`
 	Datetime  string `json:"dt_txt"`
 	Main      struct {
 		Temp       float32 `json:"temp"`
