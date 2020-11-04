@@ -13,7 +13,7 @@ type Option struct {
 
 // DefaultOption ...
 var DefaultOption = Option{
-	Units: "metrics",
+	Units: "metric",
 	Count: 10,
 }
 
