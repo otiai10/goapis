@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/otiai10/marmoset"
 
@@ -28,6 +29,16 @@ func TestNew(t *testing.T) {
 		client := &Client{BaseURL: ":invalid"}
 		_, err := client.ByCityName("tokyo", nil)
 		Expect(t, err).Not().ToBe(nil)
+	})
+
+	When(t, "group by date", func(t *testing.T) {
+		c := New("valid")
+		c.BaseURL = mock.URL
+		res, err := c.ByCityName("tokyo", nil)
+		Expect(t, err).ToBe(nil)
+		loc, _ := time.LoadLocation("Asia/Tokyo")
+		grouped := res.GroupByDate(loc)
+		Expect(t, grouped).TypeOf("[][]openweathermap.Forecast")
 	})
 }
 

@@ -1,6 +1,9 @@
 package openweathermap
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 // ForecastResponse ...
 // See https://openweathermap.org/forecast5#JSON
@@ -54,4 +57,30 @@ type Weather struct {
 func (w Weather) IconURL(suffix ...string) string {
 	suffix = append(suffix, "")
 	return fmt.Sprintf("https://openweathermap.org/img/wn/%s%s.png", w.Icon, suffix[0])
+}
+
+// GroupByDate ...
+func (res *ForecastResponse) GroupByDate(loc *time.Location) [][]Forecast {
+	result := [][]Forecast{}
+	tmp := []Forecast{}
+	var groupdate int
+	for _, f := range res.Forecasts {
+		t := time.Unix(f.Timestamp, 0)
+		if loc != nil {
+			t = t.In(loc)
+		}
+		_, _, d := t.Date() // Date of this forecast
+		if d != groupdate {
+			if len(tmp) != 0 {
+				result = append(result, tmp[:])
+				tmp = []Forecast{}
+			}
+			groupdate = d
+		}
+		tmp = append(tmp, f)
+	}
+	if len(tmp) != 0 {
+		result = append(result, tmp[:])
+	}
+	return result
 }
