@@ -43,6 +43,9 @@ type Forecast struct {
 	Snow struct {
 		For3h float32 `json:"3h"` // Snow volume for last 3 hours (mm)
 	} `json:"snow"`
+
+	// Extended
+	LocalTime time.Time `json:"local_time"`
 }
 
 // Weather ...
@@ -69,6 +72,7 @@ func (res *ForecastResponse) GroupByDate(loc *time.Location) [][]Forecast {
 		if loc != nil {
 			t = t.In(loc)
 		}
+		f.LocalTime = t     // FIXME: Not sure this SHOULD be here or not
 		_, _, d := t.Date() // Date of this forecast
 		if d != groupdate {
 			if len(tmp) != 0 {
