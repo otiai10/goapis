@@ -16,6 +16,7 @@ type Client struct {
 }
 
 // CustomSearch ...
+// https://developers.google.com/custom-search/v1/reference/rest/v1/cse/list
 func (client *Client) CustomSearch(query url.Values) (*CustomSearchResponse, error) {
 
 	if client.HTTPClient == nil {
