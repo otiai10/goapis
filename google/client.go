@@ -13,6 +13,9 @@ type Client struct {
 	CustomSearchEngineID string
 	Referer              string
 	HTTPClient           *http.Client
+
+	// Eager search
+	Eager bool
 }
 
 // CustomSearch ...
@@ -52,8 +55,8 @@ func (client *Client) CustomSearch(query url.Values) (*CustomSearchResponse, err
 		return nil, fmt.Errorf("Google API error: %d %s", resp.Error.Code, resp.Error.Message)
 	}
 
-	if len(resp.Items) == 0 {
-		return nil, fmt.Errorf("no entries found for query: %s", query.Get("q"))
+	if len(resp.Items) == 0 && client.Eager && query.Get("start") != "0" {
+		return client.CustomSearch(client.compromise(query))
 	}
 
 	return resp, nil
@@ -84,4 +87,10 @@ func (client *Client) SearchGIF(keyword string) (*CustomSearchResponse, error) {
 	q.Add("num", fmt.Sprintf("%d", num))
 	q.Add("start", fmt.Sprintf("%d", start))
 	return client.CustomSearch(q)
+}
+
+func (client *Client) compromise(query url.Values) url.Values {
+	query.Set("num", "80")
+	query.Set("start", "0")
+	return query
 }
