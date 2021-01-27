@@ -55,7 +55,7 @@ func (client *Client) CustomSearch(query url.Values) (*CustomSearchResponse, err
 		return nil, fmt.Errorf("Google API error: %d %s", resp.Error.Code, resp.Error.Message)
 	}
 
-	if len(resp.Items) == 0 && client.Eager && query.Get("start") != "0" {
+	if len(resp.Items) == 0 && client.Eager && query.Get("start") != "1" {
 		return client.CustomSearch(client.compromise(query))
 	}
 
