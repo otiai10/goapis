@@ -90,7 +90,7 @@ func (client *Client) SearchGIF(keyword string) (*CustomSearchResponse, error) {
 }
 
 func (client *Client) compromise(query url.Values) url.Values {
-	query.Set("num", "80")
-	query.Set("start", "0")
+	query.Set("num", "10")
+	query.Set("start", "1")
 	return query
 }
