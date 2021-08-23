@@ -22,18 +22,7 @@ type CustomSearchResponse struct {
 			CX             string `json:"cx"`
 			SearchType     string `json:"searchType"`
 		} `json:"nextPage"`
-		Request []struct {
-			Title          string `json:"title"`
-			TotalResults   string `json:"totalResults"`
-			SearchTerms    string `json:"searchTerms"`
-			Count          int    `json:"count"`
-			StartIndex     int    `json:"startIndex"`
-			InputEncoding  string `json:"inputEncoding"`
-			OutputEncoding string `json:"outputEncoding"`
-			Safe           string `json:"safe"`
-			CX             string `json:"cx"`
-			SearchType     string `json:"searchType"`
-		} `json:"request"`
+		Request []CustomSearchRequest `json:"request"`
 	}
 	Context struct {
 		Title string `json:"title"`
@@ -55,6 +44,19 @@ type CustomSearchResponse struct {
 		Code    int    `json:"code"`
 		Message string `json:"message"`
 	} `json:"error"`
+}
+
+type CustomSearchRequest struct {
+	Title          string `json:"title"`
+	TotalResults   string `json:"totalResults"`
+	SearchTerms    string `json:"searchTerms"`
+	Count          int    `json:"count"`
+	StartIndex     int    `json:"startIndex"`
+	InputEncoding  string `json:"inputEncoding"`
+	OutputEncoding string `json:"outputEncoding"`
+	Safe           string `json:"safe"`
+	CX             string `json:"cx"`
+	SearchType     string `json:"searchType"`
 }
 
 // CustomSearchItem ...
