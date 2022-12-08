@@ -32,7 +32,7 @@ func (client Client) Ask(persona Persona, prompt []string) (response ResponseBod
 	if err := json.NewEncoder(buf).Encode(body); err != nil {
 		return response, fmt.Errorf("failed to encode requst body: %v", err)
 	}
-	req, err := http.NewRequest("POST", client.BaseURL, buf)
+	req, err := http.NewRequest("POST", client.BaseURL+"/completions", buf)
 	if err != nil {
 		return response, fmt.Errorf("failed to init request: %v", err)
 	}
