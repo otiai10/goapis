@@ -21,12 +21,16 @@ const (
 	Davinci Persona = TextDavinci003
 )
 
+const (
+	DefaultMaxTokensOfTheClient = 1024
+)
+
 // AskDavinci: You ain't gonna need it.
-func (client Client) Ask(persona Persona, prompt []string) (response ResponseBody, err error) {
+func (client Client) Ask(persona Persona, prompt string) (response ResponseBody, err error) {
 	body := RequestBody{
 		Model:     string(persona),
-		Prompt:    prompt,
-		MaxTokens: 140,
+		Prompt:    []string{prompt},
+		MaxTokens: DefaultMaxTokensOfTheClient,
 	}
 	buf := bytes.NewBuffer(nil)
 	if err := json.NewEncoder(buf).Encode(body); err != nil {
