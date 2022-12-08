@@ -36,6 +36,8 @@ func (client Client) Ask(persona Persona, prompt []string) (response ResponseBod
 	if err != nil {
 		return response, fmt.Errorf("failed to init request: %v", err)
 	}
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", client.APIKey))
+	req.Header.Add("Content-Type", "application/json")
 	if client.HTTPClient == nil {
 		client.HTTPClient = http.DefaultClient
 	}
@@ -44,6 +46,16 @@ func (client Client) Ask(persona Persona, prompt []string) (response ResponseBod
 		return response, fmt.Errorf("failed to execute request: %v", err)
 	}
 	defer res.Body.Close()
-	err = json.NewDecoder(res.Body).Decode(&response)
-	return response, err
+	if res.StatusCode >= 400 {
+		errbody := ErrorResponseBody{}
+		if err = json.NewDecoder(res.Body).Decode(&errbody); err != nil {
+			return response, fmt.Errorf("failed to decode error body: %v", err)
+		} else {
+			return response, errbody.Error
+		}
+	}
+	if err = json.NewDecoder(res.Body).Decode(&response); err != nil {
+		return response, fmt.Errorf("failed to decode success body: %v", err)
+	}
+	return response, nil
 }

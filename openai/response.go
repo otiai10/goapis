@@ -1,5 +1,9 @@
 package openai
 
+import (
+	"fmt"
+)
+
 type ResponseBody struct {
 	ID      string   `json:"id"`
 	Object  string   `json:"object"`
@@ -42,4 +46,29 @@ type Usage struct {
 	PromptTokens     int `json:"prompt_tokens"`
 	CompletionTokens int `json:"completion_tokens"`
 	TotalTokens      int `json:"total_tokens"`
+}
+
+type ErrorResponseBody struct {
+	Error ErrorEntry `json:"error"`
+	/*
+		{
+			"error": {
+			  "message": "you must provide a model parameter",
+			  "type": "invalid_request_error",
+			  "param": null,
+			  "code": null
+			}
+		  }
+	*/
+}
+
+type ErrorEntry struct {
+	Message string      `json:"message"`
+	Type    string      `json:"type"`
+	Param   interface{} `json:"param"` // FIXME:
+	Code    interface{} `json:"code"`  // FIXME:
+}
+
+func (err ErrorEntry) Error() string {
+	return fmt.Sprintf("openai: %v: %v, %v (%v)", err.Type, err.Message, err.Param, err.Code)
 }
